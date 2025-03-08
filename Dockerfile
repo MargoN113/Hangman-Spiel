@@ -7,8 +7,11 @@ RUN apt-get update && apt-get install -y maven
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем все файлы в контейнер
-COPY . .
+# Копируем все файлы из текущей директории в контейнер
+COPY . .  # Убедись, что 'pom.xml' тоже копируется
+
+# Проверим, что файл 'pom.xml' присутствует
+RUN ls -la /app
 
 # Собираем проект с помощью Maven
 RUN mvn clean package -DskipTests
