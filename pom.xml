@@ -54,7 +54,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.example.HangManSpringBootApplication</mainClass>
+					<mainClass>com.example.HangMan_SpringBoot.HangManSpringBootApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
