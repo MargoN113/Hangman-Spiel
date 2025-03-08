@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y maven
 WORKDIR /app
 
 # Копируем все файлы из текущей директории в контейнер
-COPY . . 
+COPY . .
 
 # Проверим, что файл 'pom.xml' присутствует
 RUN ls -la /app
