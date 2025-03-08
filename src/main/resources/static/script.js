@@ -28,7 +28,6 @@ function startGame() {
                let formattedBlanks = blanks.split("").join(" ");
 
                blanksElement.innerText = formattedBlanks;
-               console.log(data);
            })
            .catch(error => console.error("Fehler:", error));
 }
