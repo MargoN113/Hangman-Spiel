@@ -37,7 +37,7 @@ function startGame() {
 function updateHangmanImage(tries) {
     const hangmanImages = [
         "Hangman_0.drawio_1.png",
-        "Hangman_1.png",
+        "Hangman_1.drawio_1.png",
         "Hangman_2.drawio_1.png",
         "Hangman_3.drawio_1.png",
         "Hangman_4.drawio_1.png",
