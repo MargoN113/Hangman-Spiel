@@ -1,0 +1,114 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  font-family: 'Special Elite', cursive;
+  text-align: center;
+  font-size: 20px;
+  background: linear-gradient(135deg, #f0e4d7, #cfd8dc);
+  background-attachment: fixed;
+}
+/* Hintergrund abdunkeln */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Halbtransparenter schwarzer Hintergrund */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Container für "Nochmal spielen?" & Button */
+#playAgainContainer {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Schwarze Umrandung */
+    text-align: center;
+    border: 2px solid black;
+    z-index: 11;
+
+}
+
+/* Textstil mit schwarzer Umrandung */
+#playAgainText {
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+#blanks {
+    letter-spacing: 5px; /* Чтобы прочерки были ровнее распределены */
+    text-align: center;
+}
+
+/* Button-Stil mit Umrandung */
+#restartButton {
+    width: 120px;
+    height: 50px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s,  color 0.3s;
+    margin-left: 35px;
+}
+
+#restartButton:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
+
+#hangman {
+    width: 270px;
+    height: 270px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    z-index: 1; /* Damit das Bild hinter dem Text bleibt */
+}
+
+#startButton {
+    display: block;
+    margin: 100px auto;
+    width: 100px;
+    height: 60px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, color 0.3s;
+}
+
+#startButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #666;
+    transform: scale(1.05);
+}
+
+#status {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#hinweis {
+    font-size: 14px;
+    margin-top: 100px;
+}
