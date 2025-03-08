@@ -21,7 +21,7 @@ function startGame() {
 
     let blanksElement = document.getElementById("blanks");
 
-    fetch("/start")
+    fetch("https://hangman-spiel.onrender.com/start")
            .then(response => response.text())
            .then(data => {
                let blanks = data.split(":")[1];
@@ -56,7 +56,7 @@ document.addEventListener("keydown", function(event) {
 
         document.getElementById("usedLetters").innerText += " " + pressedKey;
 
-        fetch("/checkLetter?letter=" + pressedKey)
+        fetch("https://hangman-spiel.onrender.com/checkLetter?letter=" + pressedKey)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
