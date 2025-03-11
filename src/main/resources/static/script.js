@@ -1,16 +1,52 @@
+function updateHangmanImage(tries) {
+    const hangmanImages = [
+        "Hangman_0.png",
+        "Hangman_1.png",
+        "Hangman_2.png",
+        "Hangman_3.png",
+        "Hangman_4.png",
+        "Hangman_5.png",
+        "Hangman_6.png"
+    ];
+    document.getElementById("hangman").src = hangmanImages[6 - tries];
+}
+
+let selectedDifficulty = null;
+const difficultyButtons = document.querySelectorAll(".difficulty");
+
+difficultyButtons.forEach(button => {
+    button.addEventListener("click", function() {
+        difficultyButtons.forEach(b => b.classList.remove("active"));
+
+        button.classList.add("active");
+        selectedDifficulty = button.getAttribute("data-level");
+        localStorage.setItem("selectedDifficulty", selectedDifficulty);
+    });
+});
+
+
 if (localStorage.getItem("isPlayingAgain") === "true") {
-    startGame();
+    startGame(localStorage.getItem("selectedDifficulty"));
 }
 else {
     document.getElementById("startButton").style.display = "block";
 }
 
 document.getElementById("startButton").addEventListener("click", function() {
-    startGame();
+    if (!selectedDifficulty) {
+        alert("Wähle bitte den Schwierigkeitsgrad aus!");
+        return;
+    }
+    localStorage.setItem("selectedDifficulty", selectedDifficulty);
+    startGame(selectedDifficulty);
 });
 
-function startGame() {
+function startGame(difficulty) {
+    document.getElementById("difficultyLevels").style.display = "none";
     document.getElementById("startButton").style.display = "none";
+    document.getElementById("difficultyInfo").style.display = "block";
+    document.getElementById("difficultyInfo").innerText = "Schwierigkeitsgrad: " + difficulty;
+
     localStorage.setItem("isPlayingAgain", "false");
 
     document.getElementById("hangman").style.display = "block";
@@ -24,38 +60,29 @@ function startGame() {
     fetch("/start")
            .then(response => response.text())
            .then(data => {
-               let blanks = data.split(":")[1];
-               let formattedBlanks = blanks.split("").join(" ");
-
-               blanksElement.innerText = formattedBlanks;
+               blanksElement.innerText = data.split("").join(" ");
            })
            .catch(error => console.error("Fehler:", error));
 }
 
-
-function updateHangmanImage(tries) {
-    const hangmanImages = [
-        "Hangman_0.drawio_1.png",
-        "Hangman_1.drawio_1.png",
-        "Hangman_2.drawio_1.png",
-        "Hangman_3.drawio_1.png",
-        "Hangman_4.drawio_1.png",
-        "Hangman_5.drawio_1.png",
-        "Hangman_6.drawio_1.png"
-    ];
-    document.getElementById("hangman").src = hangmanImages[6 - tries];
-}
-
 let enteredLetters = new Set();
 
-document.addEventListener("keydown", function(event) {
+let invalidSymbol = 0;
+let invalidLetter = 0;
+let lastErrorType = "";
+
+function mainKeydownListener(event) {
     const pressedKey = event.key.toUpperCase();
+
     if (/^[A-ZÄÖÜß]$/.test(pressedKey) && !enteredLetters.has(pressedKey)) {
         enteredLetters.add(pressedKey);
+        invalidSymbol = 0;
+        invalidLetter = 0;
+        lastErrorType = "";
 
         document.getElementById("usedLetters").innerText += " " + pressedKey;
 
-        fetch("/checkLetter?letter=" + pressedKey)
+        fetch("setLetter?letter=" + pressedKey)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -63,18 +90,12 @@ document.addEventListener("keydown", function(event) {
                     alert(data.error);
                 }
                 else {
+                    let bytes = Uint8Array.from(atob(data.chosenWord), c => c.charCodeAt(0));
+                    data.chosenWord = new TextDecoder('utf-8').decode(bytes);
                     document.getElementById("blanks").innerHTML = data.word.split("").join(" ");
 
                     if (data.win) {
-                        document.getElementById("message").innerText = "Herzlichen Glückwunsch! Du hast gewonnen!🎉";
-                        document.removeEventListener("keydown", arguments.callee);
-
-                        setTimeout(() => {
-                                document.getElementById("playAgainText").style.display = "block";
-                                document.getElementById("overlay").style.display = "flex";
-                                document.getElementById("restartButton").style.display = "block";
-                            }, 1700);
-
+                        showWinMessage();
                         return;
                     }
 
@@ -86,18 +107,12 @@ document.addEventListener("keydown", function(event) {
                         updateHangmanImage(data.tries);
                         document.getElementById("triesCounter").innerText = "Leben: " + data.tries + "💖";
 
+                        if (localStorage.getItem("selectedDifficulty") === "Normal" && data.tries === 1) {
+                            handleHint(data.word);
+                        }
+
                         if (data.tries === 0) {
-                            document.getElementById("message").innerText = "Leider hast du verloren!😲";
-                            document.getElementById("triesCounter").innerText = "Leben: " + data.tries + "💔";
-                            document.removeEventListener("keydown", arguments.callee);
-
-                            document.getElementById("word").innerHTML = "Das Wort war:&nbsp;&nbsp;" + data.chosenWord;
-
-                            setTimeout(() => {
-                                    document.getElementById("playAgainText").style.display = "block";
-                                    document.getElementById("overlay").style.display = "flex";
-                                    document.getElementById("restartButton").style.display = "block";
-                                }, 2600);
+                            showLoseMessage(data.chosenWord);
                             return;
                         }
                     }
@@ -106,15 +121,128 @@ document.addEventListener("keydown", function(event) {
             .catch(error => console.error("Error:", error));
     }
     else if (!/^[A-ZÄÖÜß]$/.test(pressedKey)) {
-        document.getElementById("message").innerText = "Beachte bitte den Hinweis über die Eingabe!";
+        if (lastErrorType !== "invalidKey") {
+            invalidSymbol = 0;
+        }
+        invalidSymbol++;
+        lastErrorType = "invalidKey";
+
+        document.getElementById("message").innerText = "Beachte bitte den Hinweis über die Eingabe! (x" + invalidSymbol + ")";
     }
-    else {
-        document.getElementById("message").innerText = "Dieser Buchstabe wurde schon benutzt!";
+    else if (enteredLetters.has(pressedKey)) {
+        if (lastErrorType !== "repeatedLetter") {
+            invalidLetter = 0;
+        }
+        invalidLetter++;
+        lastErrorType = "repeatedLetter";
+
+        document.getElementById("message").innerText = "Dieser Buchstabe wurde schon benutzt! (x" + invalidLetter + ")";
     }
-});
+}
+
+document.addEventListener("keydown", mainKeydownListener);
+
+function showWinMessage() {
+    document.getElementById("message").innerText = "Herzlichen Glückwunsch! Du hast gewonnen!🎉";
+    document.removeEventListener("keydown", mainKeydownListener);
+
+    setTimeout(() => {
+        document.getElementById("playAgainText").style.display = "block";
+        document.getElementById("overlay").style.display = "flex";
+        document.getElementById("restartButton").style.display = "block";
+    }, 1700);
+}
+
+function showLoseMessage(chosenWord) {
+    document.getElementById("message").innerText = "Leider hast du verloren!😲";
+    document.getElementById("triesCounter").innerText = "Leben: 0💔";
+    document.removeEventListener("keydown", mainKeydownListener);
+
+    document.getElementById("helpText").style.display = "none";
+    document.getElementById("word").innerHTML = "Das Wort war:&nbsp;&nbsp;" + chosenWord;
+
+    setTimeout(() => {
+        document.getElementById("playAgainText").style.display = "block";
+        document.getElementById("overlay").style.display = "flex";
+        document.getElementById("restartButton").style.display = "block";
+    }, 2600);
+}
+
+function handleHint(word) {
+    let hintMessage = "";
+    let firstClosed = word[0] === "_";
+    let lastClosed = word[word.length-1] === "_";
+    let letterIndexArr = [];
+
+    if (firstClosed && lastClosed) {
+        hintMessage = "ersten und letzten";
+        letterIndexArr.push(0);
+        letterIndexArr.push(word.length-1);
+    }
+    else if (firstClosed) {
+        hintMessage = "ersten";
+        letterIndexArr.push(0);
+    }
+    else if (lastClosed) {
+        hintMessage = "letzten";
+        letterIndexArr.push(word.length-1);
+    }
+    if (firstClosed || lastClosed) {
+        document.getElementById("helpText").innerText = "Du hast nur ein Leben! Willst du dir den " + hintMessage + " Buchstaben anzeigen lassen?";
+        document.getElementById("helpButton").style.display = "block";
+
+        const helpButton = document.getElementById("helpButton");
+        if (!helpButton.hasEventListener) {
+            helpButton.addEventListener("click", function(event) {
+                fetch("setLetter?hint=true")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error(data.error);
+                            alert(data.error);
+                        }
+                        else {
+                            document.getElementById("blanks").innerHTML = data.word.split("").join(" ");
+
+                            for (let i = 0; i < letterIndexArr.length; i++) {
+                                enteredLetters.add(data.word[letterIndexArr[i]]);
+                                document.getElementById("usedLetters").innerText += " " + data.word[letterIndexArr[i]];
+                            }
+                        }
+                    })
+                    .catch(error => console.error("Fehler beim Abrufen der Daten:", error));
+
+                helpButton.style.display = "none";
+                document.getElementById("helpText").style.display = "none";
+                document.getElementById("message").innerText = "So sieht das Wort aus!";
+            });
+                helpButton.hasEventListener = true;
+        }
+
+        document.addEventListener("keydown", function keydownHandler(event) {
+            const pressedKey = event.key.toUpperCase();
+            if (/^[A-ZÄÖÜß]$/.test(pressedKey)) {
+                document.getElementById("helpText").style.display = "none";
+                document.getElementById("helpButton").style.display = "none";
+
+                document.removeEventListener("keydown", keydownHandler);
+            }
+        });
+
+    }
+}
 
 document.getElementById("restartButton").addEventListener("click", function() {
     localStorage.setItem("isPlayingAgain", "true");
     location.reload();
 });
+
+document.getElementById("changeDifficultyButton").addEventListener("click", function() {
+    localStorage.setItem("isPlayingAgain", "false");
+    location.reload();
+});
+
+
+
+
 
