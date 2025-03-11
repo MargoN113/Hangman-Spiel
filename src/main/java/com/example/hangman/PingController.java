@@ -8,6 +8,6 @@ public class PingController {
 
     @GetMapping("/ping")
     public String ping() {
-        return "OK";  // Минимальный ответ, чтобы не тратить трафик
+        return "OK";
     }
 }
