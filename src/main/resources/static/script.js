@@ -13,6 +13,7 @@ function updateHangmanImage(tries) {
 
 let selectedDifficulty = null;
 const difficultyButtons = document.querySelectorAll(".difficulty");
+document.getElementById("startButton").disabled = true;
 
 difficultyButtons.forEach(button => {
     button.addEventListener("click", function() {
@@ -21,6 +22,8 @@ difficultyButtons.forEach(button => {
         button.classList.add("active");
         selectedDifficulty = button.getAttribute("data-level");
         localStorage.setItem("selectedDifficulty", selectedDifficulty);
+        startButton.disabled = false;
+        startButton.classList.add("active");
     });
 });
 
@@ -33,10 +36,6 @@ else {
 }
 
 document.getElementById("startButton").addEventListener("click", function() {
-    if (!selectedDifficulty) {
-        alert("Wähle bitte den Schwierigkeitsgrad aus!");
-        return;
-    }
     localStorage.setItem("selectedDifficulty", selectedDifficulty);
     startGame(selectedDifficulty);
 });
@@ -95,7 +94,7 @@ function mainKeydownListener(event) {
                     document.getElementById("blanks").innerHTML = data.word.split("").join(" ");
 
                     if (data.win) {
-                        showWinMessage();
+                        showWinMessage(data.chosenWord);
                         return;
                     }
 
@@ -142,30 +141,30 @@ function mainKeydownListener(event) {
 
 document.addEventListener("keydown", mainKeydownListener);
 
-function showWinMessage() {
+function showWinMessage(chosenWord) {
     document.getElementById("message").innerText = "Herzlichen Glückwunsch! Du hast gewonnen!🎉";
-    document.removeEventListener("keydown", mainKeydownListener);
 
-    setTimeout(() => {
-        document.getElementById("playAgainText").style.display = "block";
-        document.getElementById("overlay").style.display = "flex";
-        document.getElementById("restartButton").style.display = "block";
-    }, 1700);
+    showPlayAgainText(chosenWord);
 }
 
 function showLoseMessage(chosenWord) {
     document.getElementById("message").innerText = "Leider hast du verloren!😲";
     document.getElementById("triesCounter").innerText = "Leben: 0💔";
-    document.removeEventListener("keydown", mainKeydownListener);
 
     document.getElementById("helpText").style.display = "none";
-    document.getElementById("word").innerHTML = "Das Wort war:&nbsp;&nbsp;" + chosenWord;
 
-    setTimeout(() => {
-        document.getElementById("playAgainText").style.display = "block";
-        document.getElementById("overlay").style.display = "flex";
-        document.getElementById("restartButton").style.display = "block";
-    }, 2600);
+    showPlayAgainText(chosenWord);
+}
+
+function showPlayAgainText(chosenWord) {
+     document.removeEventListener("keydown", mainKeydownListener);
+
+     setTimeout(() => {
+            document.getElementById("word").innerText = "📍" + chosenWord + "📍";
+            document.getElementById("playAgainText").style.display = "block";
+            document.getElementById("overlay").style.display = "flex";
+            document.getElementById("restartButton").style.display = "block";
+        }, 1700);
 }
 
 function handleHint(word) {
@@ -210,7 +209,7 @@ function handleHint(word) {
                             }
                         }
 
-                        if (!data.word.includes("_")) showWinMessage();
+                        if (!data.word.includes("_")) showWinMessage(data.chosenWord);
                     })
                     .catch(error => console.error("Fehler beim Abrufen der Daten:", error));
 

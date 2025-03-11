@@ -26,7 +26,7 @@ public class GameController {
     @GetMapping("/start")
     public String getWord(HttpSession session) {
         String chosenWord = allWords[(int) (Math.random() * allWords.length)].toUpperCase();
-        
+
         while (usedWords.contains(chosenWord)) {
             chosenWord = allWords[(int) (Math.random() * allWords.length)].toUpperCase();
         }
