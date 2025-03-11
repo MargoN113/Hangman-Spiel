@@ -243,6 +243,12 @@ document.getElementById("changeDifficultyButton").addEventListener("click", func
     location.reload();
 });
 
+setInterval(() => {
+    fetch("/ping")
+        .then(response => response.text())
+        .then(data => console.log("Ping response:", data))
+        .catch(error => console.error("Ping error:", error));
+}, 25 * 60 * 1000);
 
 
 
