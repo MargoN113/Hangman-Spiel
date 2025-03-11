@@ -127,7 +127,7 @@ function mainKeydownListener(event) {
         invalidSymbol++;
         lastErrorType = "invalidKey";
 
-        document.getElementById("message").innerText = "Beachte bitte den Hinweis über die Eingabe! (x" + invalidSymbol + ")";
+        document.getElementById("message").innerText = "Beachte bitte unten den Hinweis über die Eingabe! (x" + invalidSymbol + ")";
     }
     else if (enteredLetters.has(pressedKey)) {
         if (lastErrorType !== "repeatedLetter") {
@@ -209,6 +209,8 @@ function handleHint(word) {
                                 document.getElementById("usedLetters").innerText += " " + data.word[letterIndexArr[i]];
                             }
                         }
+
+                        if (!data.word.includes("_")) showWinMessage();
                     })
                     .catch(error => console.error("Fehler beim Abrufen der Daten:", error));
 

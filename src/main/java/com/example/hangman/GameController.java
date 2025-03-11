@@ -26,7 +26,7 @@ public class GameController {
     @GetMapping("/start")
     public String getWord(HttpSession session) {
         String chosenWord = allWords[(int) (Math.random() * allWords.length)].toUpperCase();
-
+        
         while (usedWords.contains(chosenWord)) {
             chosenWord = allWords[(int) (Math.random() * allWords.length)].toUpperCase();
         }
@@ -68,6 +68,13 @@ public class GameController {
             boolean firstClosed = blanksSplitted[0].equals("_");
             boolean lastClosed = blanksSplitted[blanksSplitted.length-1].equals("_");
 
+
+            for (int i = 0; i < chosenWordSplitted.length; i++) {
+                if (chosenWordSplitted[i].equals(chosenWordSplitted[0]) || chosenWordSplitted[i].equals(chosenWordSplitted[chosenWordSplitted.length-1])) {
+                    indicesList.add(i);
+                }
+            }
+
             if (firstClosed && lastClosed) {
                 indicesList.add(0);
                 indicesList.add(blanksSplitted.length-1);
@@ -105,7 +112,6 @@ public class GameController {
         response.put("tries", tries);
         response.put("chosenWord", Base64.getEncoder().encodeToString(chosenWord.getBytes(StandardCharsets.UTF_8)));
         if (!blanks.contains("_")) response.put("win", true);
-
 
         return response;
     }
