@@ -19,7 +19,8 @@
 - Neuen Schwierigkeitsgrad "Leicht" hinzufügen
 - Benutzerfreundlichkeit verbessern
 - Siege und Niederlagen in einer Session zählen
-- Evtl. mit der Datenbank verbinden 
+- Evtl. mit der Datenbank verbinden
+- Sicherheit verbessern -> ✅
 
 ## Beispiele
 ![image](https://github.com/user-attachments/assets/3fffd82e-c9f1-4ba6-9d0f-6014e8e65b61)
