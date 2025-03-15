@@ -16,7 +16,7 @@
 - Lokale Speicherung von Fortschritten und Schwierigkeitsgrad
 
 ## To-Do
-- Neuen Schwierigkeitsgrad: "Leicht" hinzufügen
+- Neuen Schwierigkeitsgrad "Leicht" hinzufügen
 - Benutzerfreundlichkeit verbessern
 - Siege und Niederlagen in einer Session zählen
 - Evtl. mit der Datenbank verbinden 
