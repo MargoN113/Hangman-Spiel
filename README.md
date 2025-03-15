@@ -1,6 +1,8 @@
 # Hangman Spiel
 ### Projektebschrebung: Ein klassisches Hangman Spiel, das in Java und Spring Boot entwickelt wurde, mit Unterstützung für verschiedene Schwierigkeitsgrade und einer einfachen Benutzeroberfläche.
 
+## Benutzung
+- Das Spiel ist online unter https://hangman-spiel.onrender.com/ verfügbar
 ## Technologien
 - Frontend: HTML, CSS, JavaScript
 - Backend: Java, Spring Boot
@@ -14,9 +16,9 @@
 - Lokale Speicherung von Fortschritten und Schwierigkeitsgrad
 
 ## To-Do
-- Neuen Schwierigkeitsgrad: "Leicht" einbauen
+- Neuen Schwierigkeitsgrad: "Leicht" hinzufügen
 - Benutzerfreundlichkeit verbessern
-- Siege und Niederlagen in der Session zählen
+- Siege und Niederlagen in einer Session zählen
 - Evtl. mit der Datenbank verbinden 
 
 ## Beispiele
