@@ -15,6 +15,13 @@
 - Anzeige eines Hangmans, der sich mit jedem falschen Versuch weiter aufbaut
 - Lokale Speicherung von Fortschritten und Schwierigkeitsgrad
 
+## Klassen
+- **HangmanSpringBootApplication** - Hauptklasse, von hier aus wird das Spiel gestartet.
+- **GameController** - Enthält die ganze Spiellogik. Methode *getWord(...)* erzeugt das Wort und speichert es in der Session, Methode *setLetter(...)* setzt einen oder mehrere Buchstaben in Wort ein: Die Eingabeparameter werden analysiert und basierend darauf wird der Code ausgeführt.
+- **MainController** - Sorgt dafür, dass die Startseite mit der zugehörigen HTML-Datei geladen wird.
+- **WebConfig** - Zeigt Spring Boot an, welchen Pfad er verwenden soll, um auf statische Ressourcen zuzugreifen.
+- **SendRequestService** - Sendet alle 15 Minuten eine HTTP-anfrage an den Server, damit er immer sofort erreichbar ist.
+
 ## To-Do
 - Neuen Schwierigkeitsgrad "Leicht" hinzufügen
 - Benutzerfreundlichkeit verbessern
