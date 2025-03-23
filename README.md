@@ -25,7 +25,7 @@
 ## To-Do
 - Neuen Schwierigkeitsgrad "Leicht" hinzufügen
 - Benutzerfreundlichkeit verbessern
-- Siege und Niederlagen in der Session zählen
+- Siege und Niederlagen in der Session zählen -> ✅
 - Evtl. mit der Datenbank verbinden
 - Sicherheit verbessern -> ✅
 
