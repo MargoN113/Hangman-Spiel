@@ -24,10 +24,10 @@
 
 ## To-Do
 - Neuen Schwierigkeitsgrad "Leicht" hinzufügen
-- Benutzerfreundlichkeit verbessern
+- Benutzerfreundlichkeit verbessern (z.B. Möglichkeit, die Zähler jederzeit zurückzusetzen, Nachrichten, die den Vorgang für den User bestätigen) -> ✅
 - Siege und Niederlagen in der Session zählen -> ✅
 - Evtl. mit der Datenbank verbinden
-- Sicherheit verbessern -> ✅
+- Sicherheit verbessern (das Wort wird nicht nach außen sichtbar) -> ✅
 
 ## Beispiele
 ![image](https://github.com/user-attachments/assets/3fffd82e-c9f1-4ba6-9d0f-6014e8e65b61)
