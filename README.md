@@ -30,7 +30,6 @@
 - Sicherheit verbessern (das Wort wird nicht nach außen sichtbar) -> ✅
 
 ## Beispiele
-![image](https://github.com/user-attachments/assets/d22bc0b4-fb9b-4828-9436-ca5711230927)
 ![image](https://github.com/user-attachments/assets/30ce9d67-6c86-41f7-8915-b137c26dc512)
 ![image](https://github.com/user-attachments/assets/f1f29d91-6440-42cc-9b95-de55fc5221c7)
 ![image](https://github.com/user-attachments/assets/4f3dedff-25ab-43b4-a335-0a77e16e4856)
