@@ -25,6 +25,7 @@
 ## To-Do
 - Neuen Schwierigkeitsgrad "Leicht" hinzufügen
 - Möglichkeit, die Länge der Wörter auszuwählen
+- Audio-Effekte hinzufügen
 - Benutzerfreundlichkeit verbessern (Möglichkeit, die Zähler jederzeit zurückzusetzen; Nachrichten, die den Vorgang für den User bestätigen etc.) -> ✅
 - Siege und Niederlagen in der Session zählen -> ✅
 - Evtl. mit der Datenbank verbinden
