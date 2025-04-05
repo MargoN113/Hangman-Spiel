@@ -28,7 +28,6 @@
 - Audio-Effekte hinzufügen
 - Benutzerfreundlichkeit verbessern (Möglichkeit, die Zähler jederzeit zurückzusetzen; Nachrichten, die den Vorgang für den User bestätigen etc.) -> ✅
 - Siege und Niederlagen in der Session zählen -> ✅
-- Evtl. mit der Datenbank verbinden
 - Sicherheit verbessern (das Wort wird nicht nach außen sichtbar) -> ✅
 
 ## Beispiele
